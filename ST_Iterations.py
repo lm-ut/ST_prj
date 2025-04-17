@@ -1,14 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
+### Script to test supervised admixture result on incremental sample size
 
 import subprocess
-
-
-# In[ ]:
-
 
 filepath = 'ST_LIST'                           
 chunk_size=34
@@ -27,9 +19,6 @@ for i, chunk in enumerate(chunks, 1):
         f.writelines(chunk)
 
 
-# In[ ]:
-
-
 # EGREP command (append filtered lines to chunk_i)
 egrep_command = """
 for i in {1..10}; do 
@@ -37,10 +26,6 @@ for i in {1..10}; do
 done
 """
 subprocess.run(["bash", "-c", egrep_command], check=True)
-
-
-# In[ ]:
-
 
 # PLINK command
 plink_command = """
@@ -54,9 +39,6 @@ process = subprocess.Popen(["bash", "-c", plink_command], stdout=subprocess.PIPE
 for line in process.stdout:
     print(line, end='')
 process.wait()
-
-
-# In[ ]:
 
 
 awk_command = """
