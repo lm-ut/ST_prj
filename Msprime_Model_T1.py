@@ -7,6 +7,8 @@ parser = argparse.ArgumentParser(description="Perform msprime simulations.")
 
 ## ANCESTRAL POP
 parser.add_argument("--pop_size_ANC", help="Pop Size ANC", type=int, default=10000)
+parser.add_argument("--anc_split", help="Time of split from ANC into A and B", type=int, default=1000)
+
 
 #######
 ## A ##
@@ -41,12 +43,15 @@ parser.add_argument("--ind_sampled_C", help="Individuals sampled C", type=int, d
 ###############
 # Output name #
 ###############
-parser.add_argument("--output", help="Output VCF filename")
+parser.add_argument("--output", help="Output VCF filename", default="default_output.vcf")
+
+
 
 args = parser.parse_args()
 
 # Unpack args for clarity
 population_size_ANC = args.pop_size_ANC
+split_time_ANC = args.anc_split
 
 # Population A
 population_size_A = args.pop_size_A
@@ -82,7 +87,7 @@ demography.add_population(name="ANC", initial_size=population_size_ANC, initiall
 print("BEGIN")
 
 # Split ANC into A and B
-demography.add_population_split(time=1000, ancestral="ANC", derived=["A", "B"])
+demography.add_population_split(time=split_time_ANC, ancestral="ANC", derived=["A", "B"])
 
 # Bottlenecks in A and B
 demography.add_population_parameters_change(
@@ -139,4 +144,3 @@ with open(output_filename, "w") as vcf_file:
     mutated_ts.write_vcf(vcf_file)
 
 print("VCF ready")
-
